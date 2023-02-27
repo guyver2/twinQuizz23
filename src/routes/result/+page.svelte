@@ -17,11 +17,31 @@
 </script>
 
 {#if !form}
-	<div class="w-full flex place-content-center items-center pt-36">
-		<div class="card w-96 flex flex-col content-center">
-			<div class="py-16 gap-4 flex flex-col place-content-center items-center">
-				{#each scores as score}
-					<p>{score.name} : {score.score}</p>
+	<div class="w-full flex place-content-center items-center p-2 pt-8 lg:pt-36">
+		<div class="card w-full lg:w-[800px] flex flex-col content-center">
+			<div class="py-6 scoreGrid">
+				<p class="font-bold p-4">Score</p>
+				<p class="font-bold p-4">Name</p>
+				<p class="font-bold p-4">Date</p>
+
+				{#each scores as score, i}
+					<p class="p-4">{score.score}</p>
+					{#if i == 0}
+						<p class="flex gap-1 p-4">{score.name} <IconCrown color={'gold'} /></p>
+					{:else if i == 1}
+						<p class="flex gap-1 p-4">{score.name} <IconCrown color={'silver'} /></p>
+					{:else if i == 2}
+						<p class="flex gap-1 p-4">{score.name} <IconCrown color={'#CD7F32'} /></p>
+					{:else if i == scores.length - 1}
+						<p class="flex gap-1 p-4">{score.name} <IconPoo color={'gold'} /></p>
+					{:else if i == scores.length - 2}
+						<p class="flex gap-1 p-4">{score.name} <IconPoo color={'silver'} /></p>
+					{:else if i == scores.length - 3}
+						<p class="flex gap-1 p-4">{score.name} <IconPoo color={'#CD7F32'} /></p>
+					{:else}
+						<p class="p-4">{score.name}</p>
+					{/if}
+					<p class="p-4">{score.date}</p>
 				{/each}
 			</div>
 		</div>
@@ -38,13 +58,17 @@
 				<h1>Score: {score} / 20</h1>
 				<IconPoo size={36} />
 			</div>
+		{:else}
+			<div class="flex w-full justify-center items-center gap-2">
+				<h1>Score: {score} / 20</h1>
+			</div>
 		{/if}
 		<div
 			class="flex flex-wrap w-full justify-around items-start p-2 gap-y-4 lg:p-12 lg:gap-4 lg:grid lg:grid-cols-3"
 		>
 			{#each { length: 20 } as _, i}
 				<div
-					class="card variant-ghost-{gt[i] == choices[i]
+					class="card card-hover variant-ghost-{gt[i] == choices[i]
 						? 'primary'
 						: 'error'} flex flex-col place-content-center items-center w-full"
 				>
@@ -61,3 +85,12 @@
 		</div>
 	</div>
 {/if}
+
+<style>
+	.scoreGrid {
+		display: grid;
+		grid-template-columns: 1fr 3fr 3fr;
+		gap: 1rem;
+		align-items: center;
+	}
+</style>

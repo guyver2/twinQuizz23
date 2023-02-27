@@ -1,14 +1,16 @@
-import type { Actions } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 import { redirect } from '@sveltejs/kit';
-import {writeFile, readFile, readFileSync} from 'fs';
+import {writeFile, readFile, readFileSync, writeFileSync, stat} from 'fs';
 
 
 const LEFT = 0;
 const RIGHT = 1;
+const SCORE_FILE ="./scores.json";
+
 
 const gt=[
   LEFT,
-  LEFT,
+  RIGHT,
   RIGHT,
   RIGHT,
   RIGHT,
@@ -29,21 +31,34 @@ const gt=[
   LEFT,
 ]
 
+function checkForFile(fileName:string){
+    stat(fileName, (exists) => {
+            if (exists == null) {
+                return;
+            } else if (exists.code === 'ENOENT') {
+                writeFileSync(fileName, JSON.stringify({scores:[]}), 'utf8');
+            }
+        });
+}
+
+
 
 export const load: PageServerLoad = async () => {
-  const data = readFileSync('./static/scores.json', 'utf8')
+  checkForFile(SCORE_FILE);
+  const data = readFileSync(SCORE_FILE, 'utf8')
   return JSON.parse(data);
 };
 
 
 
-function saveScore(input:{name:string, score:number, choices:number[]}){
-  readFile('./static/scores.json', 'utf8', function readFileCallback(err, data){
+
+function saveScore(input:{name:string, score:number, choices:number[], date: string}){
+  readFile(SCORE_FILE, 'utf8', function readFileCallback(err, data){
       if (!err) {
       const obj = JSON.parse(data); //now it an object
       obj.scores.push(input); //add some data
       const json = JSON.stringify(obj); //convert it back to json
-      writeFile('./static/scores.json', json, 'utf8', 
+      writeFile(SCORE_FILE, json, 'utf8', 
         (err) => {
           if (err) throw err;
         }); // write it back 
@@ -70,7 +85,7 @@ export const actions: Actions = {
             score = score+1;
           }
         }
-        saveScore({name:name, score:score, choices:choices});
+        saveScore({name:name, score:score, choices:choices, date: new Date().toDateString()});
         return {name:name, score:score, choices:choices, gt:gt}
       }
     }catch(err){

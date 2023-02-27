@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { IconArrowsLeftRight } from '@tabler/icons-svelte';
 
-	let name = 'toto' as string | null;
+	let name = null as string | null;
 
-	let stage = 2;
-	let img_cnt = 18;
+	let stage = 1;
+	let img_cnt = 0;
 	let choice = 0;
-	let choices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18] as number[];
+	let choices = [] as number[];
 	let leftName = 'Antoine';
 	let rightName = 'Léo';
 
@@ -52,28 +52,34 @@
 		</div>
 	</div>
 {:else}
-	<div class="w-full flex place-content-center items-center p-1 lg:p-4 pt-12 ">
-		<div class="card flex flex-col place-content-center items-center">
-			<img class="p-2 lg:w-5/6 lg:m-4 lg:p4" src="/imgs/tq_{img_cnt}.jpg" alt="tq_{img_cnt}" />
-			<div class="w-5/6 flex content-between justify-around p-4">
-				<p class="badge variant-ghost-{choice ? 'error' : 'success'} text-center lg:w-1/5">
-					{leftName}
-				</p>
-				<button class="btn bg-tertiary-700" on:click={swap}><IconArrowsLeftRight /></button>
-				<p class="badge variant-ghost-{choice ? 'success' : 'error'} text-center lg:w-1/5 ">
-					{rightName}
-				</p>
+	<div class="lg:h-screen">
+		<div class="w-full flex place-content-center items-center p-1 lg:p-4 pt-12 lg:h-5/6">
+			<div class="card flex flex-col place-content-center items-center lg:max-h-full lg:w-5/6">
+				<img
+					class="p-2 lg:m-4 lg:p4 lg:h-1/2 object-contain"
+					src="/imgs/tq_{img_cnt}.jpg"
+					alt="tq_{img_cnt}"
+				/>
+				<div class="w-5/6 flex content-between justify-around p-4">
+					<p class="badge variant-ghost-{choice ? 'error' : 'success'} text-center lg:w-1/5">
+						{leftName}
+					</p>
+					<button class="btn bg-tertiary-700" on:click={swap}><IconArrowsLeftRight /></button>
+					<p class="badge variant-ghost-{choice ? 'success' : 'error'} text-center lg:w-1/5 ">
+						{rightName}
+					</p>
+				</div>
+				{#if img_cnt == 19}
+					<form method="POST" action="/result">
+						<input type="hidden" name="name" bind:value={name} />
+						<input type="hidden" name="choices" value={JSON.stringify(choices)} />
+						<input type="hidden" name="lastChoice" bind:value={choice} />
+						<button class="btn bg-warning-500 m-4" on:click={next}> Next {img_cnt + 1} / 20</button>
+					</form>
+				{:else}
+					<button class="btn bg-primary-500 m-4" on:click={next}> Next {img_cnt + 1} / 20</button>
+				{/if}
 			</div>
-			{#if img_cnt == 19}
-				<form method="POST" action="/result">
-					<input type="hidden" name="name" value={name} />
-					<input type="hidden" name="choices" value={JSON.stringify(choices)} />
-					<input type="hidden" name="lastChoice" bind:value={choice} />
-					<button class="btn bg-warning-500 m-4" on:click={next}> Next {img_cnt + 1} / 20</button>
-				</form>
-			{:else}
-				<button class="btn bg-primary-500 m-4" on:click={next}> Next {img_cnt + 1} / 20</button>
-			{/if}
 		</div>
 	</div>
 {/if}
