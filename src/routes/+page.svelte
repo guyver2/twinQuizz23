@@ -62,7 +62,7 @@
 				/>
 				<div class="w-5/6 flex content-between justify-around p-4">
 					<div class="w-1/3 flex content-between justify-around">
-						<p class="badge variant-ghost-{choice ? 'error' : 'success'} text-center lg:w-1/5">
+						<p class="badge variant-ghost-{choice ? 'error' : 'success'} text-center w-full lg:w-1/3">
 							{leftName}
 						</p>
 					</div>
@@ -70,7 +70,7 @@
 						<button class="btn bg-tertiary-700" on:click={swap}><IconArrowsLeftRight /></button>
 					</div>
 					<div class="w-1/3 flex content-between justify-around">
-						<p class="badge variant-ghost-{choice ? 'success' : 'error'} text-center lg:w-1/5 ">
+						<p class="badge variant-ghost-{choice ? 'success' : 'error'} text-center w-full lg:w-1/3">
 						{rightName}
 					</p>
 					</div>
