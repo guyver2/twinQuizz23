@@ -78,7 +78,10 @@
 							? 'primary'
 							: 'error'} text-center rounded-b"
 					>
-						{gt[i] ? 'Right' : 'Left'}
+						<div class="flex justify-around w-full font-semibold">
+							<div class="w-1/3">{gt[i] ? 'Léo' : 'Antoine'}</div>
+							<div class="w-1/3">{gt[i] ? 'Antoine' : 'Léo'}</div>
+						</div>
 					</div>
 				</div>
 			{/each}
