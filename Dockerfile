@@ -12,12 +12,6 @@ RUN apk add gpg gpg-agent && \
   rm SHASUMS256.txt v6.16.js
 
 WORKDIR /app
-# COPY pnpm-lock.yaml ./
-# RUN pnpm fetch --dev
-
-# ADD . ./
-# RUN pnpm install --offline --dev
-
 COPY . .
 
 RUN pnpm install
