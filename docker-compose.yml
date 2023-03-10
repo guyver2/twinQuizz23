@@ -1,0 +1,9 @@
+version: "2.2"
+services:
+  tq:
+    image: tq23:latest
+    ports:
+      - "2663:3000"
+    restart: unless-stopped
+    volumes:
+      - ${PWD}/scores.json:/app/scores.json
