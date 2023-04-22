@@ -2,6 +2,8 @@
 
 The long awaited reboot of the best online game of all time.
 
+![Screenshot](demo.jpg)
+
 ## Development
 
 The following commands works with `npm` or `yarn`.
